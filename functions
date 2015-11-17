@@ -1,0 +1,34 @@
+
+##makeCacheMetrix recieves a matrix x, sets its value, gets its value and then caches the
+invers matrix and gets the invers matrix value
+
+makeCacheMetrix <- function(x = matrix()) {
+    inv <- NULL
+    set <- function(y) { 
+        x <<- y
+        inv <<- NULL
+    }
+    get <- function() x 
+    setInverse <- function(solve) inv <<- solve 
+    getInverse <- function() inv 
+    list(set = set, get = get, 
+         setInverse = setInverse, 
+         getInverse = getInverse)
+}
+
+
+##cachSolve puts the inverse of matrix x in inv, it then checks if the value of inv is not NULL,
+this means that the inverse has already been computed and cached. 
+otherwise, the inverse matrix is NULL and the inverse is computed and returned 
+
+cacheSolve <- function(x, ...) {
+    inv <- x$getInverse()
+    if(!is.null(inv)) { 
+        message("getting cached data")
+        return(inv)
+    } ##else, the value of the inverse matrix in NULL
+    data <- x$get()
+    inv <- solve(data, ...) 
+    x$setInverse(inv)
+    inv 
+}
